@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+        <script src="Site_funcs.js"> 
+    </script> 
+</head>
+<body>
+    <label>Data Inicial</label>
+    <input type="date" id="data_init"/>
+    
+    <label>Data Final</label>
+    <input type="date" id="data_end"/>
+    
+    
+    <label for="materiais">Escolha um material:</label>
+    <select name="materiais" id="materials">
+        <option value="massa">Massa</option>
+        <option value="primer">Primer</option>
+        <option value="verniz">Verniz</option>
+        <option value="esmalte">Esmalte</option>
+        <option value="tingidor">Tingidor</option>
+    </select>
+    
+    <button type ="button" id="filt_button"> Filtrar Data</button>
+    
+    <h2>Results</h2>
+    <ul id="results-list"></ul>
+</body>
+</html>
