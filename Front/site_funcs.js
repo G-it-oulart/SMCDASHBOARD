@@ -16,21 +16,13 @@ document.addEventListener("DOMContentLoaded", function() {
                 method: 'GET',
                 mode: 'cors',
             });
-
             if (!response.ok) {
                 throw new Error(`Response status: ${response.status}`);
             }
-
             const json = await response.json();
             console.log(json);
-            const resultsList = document.getElementById("results-list");
-            resultsList.innerHTML = '';
-
-            json.forEach(value => {
-                const listItem = document.createElement("li");
-                listItem.textContent = value;
-                resultsList.appendChild(listItem);
-            });
+            const result = document.getElementById("std_dev");
+            result.innerHTML = json;
         } catch (error) {
             console.error(error.message);
         }
