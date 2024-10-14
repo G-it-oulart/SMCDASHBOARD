@@ -49,8 +49,7 @@ func exec_query(query string, args pgx.NamedArgs) ([]float64, error) {
 func IdentSanit(input_string string) string {
 	return pgx.Identifier{input_string}.Sanitize()
 }
-
-func filt_dados_pesagens(data_input_init, data_input_end string, material_input string) ([]float64, error) {
-	Sql_query := fmt.Sprintf("SELECT %s FROM dados_pesagens where data_pesagem BETWEEN @data_init AND @data_end;", IdentSanit(material_input))
-	return exec_query(Sql_query, pgx.NamedArgs{"data_init": data_input_init, "data_end": data_input_end})
+func filt_dados_pesagens(data_input_init, data_input_end, material_input, material_color string) ([]float64, error) {
+	Sql_query := fmt.Sprintf("SELECT %s FROM dados_pesagens WHERE configurado = @material_color AND data_pesagem BETWEEN @data_init AND @data_end;", IdentSanit(material_input))
+	return exec_query(Sql_query, pgx.NamedArgs{"data_init": data_input_init, "data_end": data_input_end, "material_color": material_color})
 }
