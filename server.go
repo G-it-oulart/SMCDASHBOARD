@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
 	"log"
 	"net/http"
 )
@@ -19,6 +18,13 @@ func set_headers(w http.ResponseWriter) {
 	w.Header().Set("Content-Type", "application/json")
 }
 
+type array_encoder struct {
+	Val []float64
+	Avg []float64
+	Ucl []float64
+	Lcl []float64
+}
+
 func returnData(w http.ResponseWriter, r *http.Request) {
 	set_headers(w)
 	dataInit := r.URL.Query().Get("date_init")
@@ -26,10 +32,23 @@ func returnData(w http.ResponseWriter, r *http.Request) {
 	materials := r.URL.Query().Get("materials")
 	color := r.URL.Query().Get("color")
 	responseData, _ := filt_dados_pesagens(dataInit, dataEnd, materials, color)
-	sample_std_dev := std_dev(responseData)
-	log.Printf("sample_std_dev: %+v\n", sample_std_dev)
-	form_result := fmt.Sprintf("The standard deviation of the chosen frametime is: %.2f", sample_std_dev)
-	if boca := json.NewEncoder(w).Encode(form_result); boca != nil {
+	data_ucl := ucl(responseData)
+	data_lcl := lcl(responseData)
+	data_avg := avg(responseData)
+	var ucl_array []float64
+	var lcl_array []float64
+	var avg_array []float64
+	for range responseData {
+		ucl_array = append(ucl_array, data_ucl)
+	}
+	for range responseData {
+		lcl_array = append(lcl_array, data_lcl)
+	}
+	for range responseData {
+		avg_array = append(avg_array, data_avg)
+	}
+	encode_pack := array_encoder{responseData, avg_array, ucl_array, lcl_array}
+	if boca := json.NewEncoder(w).Encode(encode_pack); boca != nil {
 		http.Error(w, "Failed to encode response", http.StatusInternalServerError)
 	}
 }

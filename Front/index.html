@@ -1,22 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Document</title>
-        <script src="Site_funcs.js"> 
-        </script> 
-        <script src="https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0-beta17/dist/js/tabler.min.js"></script>
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0-beta17/dist/css/tabler.min.css">
-        
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="Site_funcs.js">
+    </script>
+    <div>
+        <canvas id="myChart"></canvas>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 </head>
+
 <body>
     <label>Initial date</label>
-    <input type="date" id="data_init"/>
-    
+    <input type="date" id="data_init" />
+
     <label>Final date</label>
-    <input type="date" id="data_end"/>
-    
+    <input type="date" id="data_end" />
+
     <label for="materials">Choose a material:</label>
     <select name="materials" id="materials">
         <option value="massa">Massa</option>
@@ -65,12 +69,10 @@
         <option value="Siena Externo">Siena externo</option>
         <option value="Siena Interno">Siena interno</option>
         <option value="Touch Bco externo">Touch bco externo</option>
-        <option value="Touch Bco interno">Touch bco interno</option>        
+        <option value="Touch Bco interno">Touch bco interno</option>
     </select>
     
-    <button type ="button" id="filt_button"> Filter data</button>
-    
-    <h2>Result dev</h2>
-    <span id="std_dev"></span>
+    <button type="button" id="filt_button"> Filter data</button>
 </body>
+
 </html>
