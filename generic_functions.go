@@ -2,8 +2,6 @@ package main
 
 import (
 	"reflect"
-
-	"github.com/jackc/pgx/v5/pgtype"
 )
 
 func conv_array_float64(conv_list []any) []float64 {
@@ -26,10 +24,10 @@ func conv_value_float64(orig_value any) float64 {
 	return conv_value.Float()
 }
 
-func convert_numeric (orig_list []pgtype.Numeric) []float64 {
-	for _, element := range orig_list {
-		if element.Valid {
-			floatValue := element.Float64
-		}
-}
-}
+//func convert_numeric (orig_list []pgtype.Numeric) []float64 {
+//	for _, element := range orig_list {
+//		if element.Valid {
+//			floatValue := element.Float64
+//		}
+//}
+//}
