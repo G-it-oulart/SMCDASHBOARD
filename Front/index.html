@@ -1,78 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-    <script src="Site_funcs.js">
-    </script>
+    <script src="Site_funcs.js"></script>
     <div>
-        <canvas id="myChart"></canvas>
+      <canvas id="myChart"></canvas>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </head>
 
-</head>
-
-<body>
+  <body>
     <label>Initial date</label>
     <input type="date" id="data_init" />
-
     <label>Final date</label>
     <input type="date" id="data_end" />
-
     <label for="materials">Choose a material:</label>
     <select name="materials" id="materials">
-        <option value="massa">Massa</option>
-        <option value="primer">Primer</option>
-        <option value="verniz">Verniz</option>
-        <option value="esmalte">Esmalte</option>
-        <option value="tingidor">Tingidor</option>
+      <option value="massa">Massa</option>
+      <option value="primer">Primer</option>
+      <option value="verniz">verniz</option>
+      <option value="esmalte">Esmalte</option>
+      <option value="tingidor">Tingidor</option>
     </select>
     <label for="color">Choose a color:</label>
-    <select name="color" id="color">
-        <option value="Avela MM Externo">Avela mm externo</option>
-        <option value="Avela MM Interno">Avela mm interno</option>
-        <option value="Azul Orion Externo">Azul orion externo</option>
-        <option value="Bco Artico Externo">Bco artico externo</option>
-        <option value="Bco Artico Interno">Bco artico interno</option>
-        <option value="Bco Nevada externo">Bco nevada externo</option>
-        <option value="Bco Nevada Interno">Bco nevada interno</option>
-        <option value="Bco of Externo">Bco of externo</option>
-        <option value="Bco of Interno">Bco of interno</option>
-        <option value="Carvalho Externo">Carvalho externo</option>
-        <option value="Carvalho interno">Carvalho interno</option>
-        <option value="Carvalho MM Externo">Carvalho mm externo</option>
-        <option value="Carvalho MM interno">Carvalho mm interno</option>
-        <option value="Carvalho Nature interno">Carvalho nature interno</option>
-        <option value="Carvalho Vermont externo">Carvalho vermont externo</option>
-        <option value="Carvalho Vermont interno">Carvalho vermont interno</option>
-        <option value="Cedro Externo">Cedro externo</option>
-        <option value="Cedro Interno">Cedro interno</option>
-        <option value="Cinza Brilho Externo">Cinza brilho externo</option>
-        <option value="Fendi Externo">Fendi externo</option>
-        <option value="Fendi interno">Fendi interno</option>
-        <option value="Freijo Externo">Freijo externo</option>
-        <option value="Freijo Interno">Freijo interno</option>
-        <option value="Freijo MM Interno">Freijo mm interno</option>
-        <option value="Grafite Externo">Grafite externo</option>
-        <option value="Grafite Interno">Grafite interno</option>
-        <option value="Lineo">Lineo</option>
-        <option value="Nogueira Externo">Nogueira externo</option>
-        <option value="Nogueira Interno">Nogueira interno</option>
-        <option value="Off White MM externo">Off white mm externo</option>
-        <option value="Off White MM interno">Off white mm interno</option>
-        <option value="Preto Brilho Externo">Preto brilho externo</option>
-        <option value="Preto Brilho Interno">Preto brilho interno</option>
-        <option value="Preto Onix Externo">Preto onix externo</option>
-        <option value="Preto Onix Interno">Preto onix interno</option>
-        <option value="Siena Externo">Siena externo</option>
-        <option value="Siena Interno">Siena interno</option>
-        <option value="Touch Bco externo">Touch bco externo</option>
-        <option value="Touch Bco interno">Touch bco interno</option>
-    </select>
-    
-    <button type="button" id="filt_button"> Filter data</button>
-</body>
-
+    <select id="color_list"></select>
+    <button type="button" id="filt_button">Filter data</button>
+  </body>
 </html>
