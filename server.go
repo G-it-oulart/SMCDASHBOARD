@@ -38,12 +38,12 @@ var counter int
 
 func return_colors(w http.ResponseWriter, r *http.Request) {
 	set_headers(w)
-	dropdown_colors, _ := return_color_names("")
+	dropdown_colors:= conv_array_string(return_color_names(""))
 	if boca := json.NewEncoder(w).Encode(dropdown_colors); boca != nil {
 		http.Error(w, "Failed to encode response", http.StatusInternalServerError)
 	}
 }
-
+	
 func returnData(w http.ResponseWriter, r *http.Request) {
 	set_headers(w)
 	dataInit := r.URL.Query().Get("date_init")
@@ -55,23 +55,65 @@ func returnData(w http.ResponseWriter, r *http.Request) {
 	data_ucl := ucl(conv_array_float64(data_response))
 	data_lcl := lcl(conv_array_float64(data_response))
 	data_avg := avg(conv_array_float64(data_response))
-	for range five_avg((conv_array_float64(data_response))) {
-		ucl_array = append(ucl_array, data_ucl)
+
+	if ucl_array !=nil {
+		ucl_array = nil
+		for range five_avg(conv_array_float64((data_response))) {
+			ucl_array = append(ucl_array, data_ucl)
+		}
+	} else {
+		for range five_avg(conv_array_float64((data_response))) {
+			ucl_array = append(ucl_array, data_ucl)
+		}
 	}
-	for range five_avg((conv_array_float64(data_response))) {
-		lcl_array = append(lcl_array, data_lcl)
-	}
-	for range five_avg((conv_array_float64(data_response))) {
+	
+	if lcl_array !=nil{
+		lcl_array = nil
+		for range five_avg(conv_array_float64((data_response))) {
+			lcl_array = append(lcl_array, data_lcl)
+		}
+	} else {
+		for range five_avg(conv_array_float64((data_response))) {
+			lcl_array = append(lcl_array, data_lcl)
+		}
+		}
+	
+	if avg_array !=nil {
+		avg_array = nil
+		for range five_avg(conv_array_float64((data_response))) {
+		avg_array = append(avg_array, data_avg)
+		}
+	} else {
+		for range five_avg(conv_array_float64((data_response))) {
 		avg_array = append(avg_array, data_avg)
 	}
-	for range five_avg((conv_array_float64(data_response))) {
+	}
+	if label_array !=nil {
+		label_array = nil
+		counter = 0
+		for range five_avg(conv_array_float64((data_response))) {
 		label_array = append(label_array, counter)
 		counter += 1
-	}
-	for range five_avg((conv_array_float64(data_response))) {
-		standards_array = append(standards_array, conv_value_float64(standards_response[0]))
+		}
+	} else {
+		for range five_avg(conv_array_float64((data_response))) {
+		label_array = append(label_array, counter)
 		counter += 1
+		}
 	}
+	
+	if standards_array != nil {
+		standards_array = nil
+		for range five_avg(conv_array_float64((data_response))) {
+		standards_array = append(standards_array, conv_value_float64(standards_response))
+		}
+	} else {
+		for range five_avg(conv_array_float64((data_response))) {
+		standards_array = append(standards_array, conv_value_float64(standards_response))
+		counter += 1
+		}
+	}
+	
 	encode_pack := array_encoder{five_avg(conv_array_float64(data_response)), avg_array, ucl_array, lcl_array, label_array, standards_array}
 	if boca := json.NewEncoder(w).Encode(encode_pack); boca != nil {
 		http.Error(w, "Failed to encode response", http.StatusInternalServerError)

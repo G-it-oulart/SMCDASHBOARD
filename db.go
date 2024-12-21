@@ -2,9 +2,10 @@ package main
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
-	"log"
 	"os"
+	"reflect"
 
 	"github.com/jackc/pgx/v5"
 )
@@ -23,7 +24,7 @@ func connect_db() (*pgx.Conn, error) {
 	return conn, nil
 }
 
-func exec_query(query string, args pgx.NamedArgs) ([]any, error) {
+func exec_query(query string, args pgx.NamedArgs) ([]byte, error) {
 	conn, _ := connect_db()
 	var rows pgx.Rows
 	rows, query_err := conn.Query(context.Background(), query, args)
@@ -31,39 +32,84 @@ func exec_query(query string, args pgx.NamedArgs) ([]any, error) {
 		fmt.Fprintf(os.Stderr, "QueryRow failed: %v\n", query_err)
 		os.Exit(1)
 	}
-	var list []any
+	json:=PgSqlRowsToJson(rows)
+	fmt.Println("JSON Result::> ", string(json))
+	return json,nil
+}
+
+func PgSqlRowsToJson(rows pgx.Rows) []byte {
+
+	fieldDescriptions := rows.FieldDescriptions()
+	var columns []string
+	for _, col := range fieldDescriptions {
+		columns = append(columns, string(col.Name))
+	}
+
+	count := len(columns)
+	tableData := make([]map[string]interface{}, 0)
+	valuePtrs := make([]interface{}, count)
+
 	for rows.Next() {
-		var value any
-		if err := rows.Scan(&value); err != nil {
-			return nil, fmt.Errorf("row scan failed: %v", err)
+ 		values, _ := rows.Values()
+	 	for i, v := range values {
+	 		valuePtrs[i] = reflect.New(reflect.TypeOf(v)).Interface() // allocate pointer to type
+ 		}
+	 	break
+	}
+	rows.Scan(valuePtrs...)
+		entry := make(map[string]interface{})
+		for i, col := range columns {
+			var v interface{}
+			val := reflect.ValueOf(valuePtrs[i]).Elem().Interface()
+			b, ok := val.([]byte)
+			if ok {
+				v = string(b)
+			} else {
+				v = val
+			}
+			entry[col] = v
 		}
-		list = append(list, value)
+		tableData = append(tableData, entry)
+
+	for rows.Next() {
+		rows.Scan(valuePtrs...)
+		entry := make(map[string]interface{})
+		for i, col := range columns {
+			var v interface{}
+			val := reflect.ValueOf(valuePtrs[i]).Elem().Interface()
+			b, ok := val.([]byte)
+			if ok {
+				v = string(b)
+			} else {
+				v = val
+			}
+			entry[col] = v
+		}
+		tableData = append(tableData, entry)
 	}
-	if err := rows.Err(); err != nil {
-		return nil, fmt.Errorf("error during rows iteration: %v", err)
-	}
-	log.Printf("Query results: %+v\n", list)
-	return list, nil
+	
+	jsonData, _ := json.Marshal(tableData)
+	return jsonData
 }
 
 func IdentSanit(input_string string) string {
 	return pgx.Identifier{input_string}.Sanitize()
 }
 
-func filt_dados_pesagens(data_input_init, data_input_end, material_input, material_color string) ([]any, error) {
-	Sql_query := fmt.Sprintf("SELECT %s FROM dados_pesagens WHERE %s IS NOT NULL AND configurado = @material_color AND data_pesagem BETWEEN @data_init AND @data_end;", IdentSanit(material_input), IdentSanit(material_input))
+func filt_dados_pesagens(data_input_init, data_input_end, material_input, material_color string) ([]byte, error) {
+	Sql_query := fmt.Sprintf("SELECT %s as material FROM dados_pesagens  WHERE %s IS NOT NULL AND configurado = @material_color AND data_pesagem BETWEEN @data_init AND @data_end;", IdentSanit(material_input), IdentSanit(material_input))
 	filt_list, _ := exec_query(Sql_query, pgx.NamedArgs{"data_init": data_input_init, "data_end": data_input_end, "material_color": material_color})
 	return filt_list, nil
 }
 
-func return_standards(material_input, material_color string) ([]any, error) {
-	Sql_query := fmt.Sprintf("SELECT %s FROM configurados_standards WHERE configurado = @material_color", IdentSanit(material_input))
+func return_standards(material_input, material_color string) ([]byte, error) {
+	Sql_query := fmt.Sprintf("SELECT %s as material FROM configurados_standards WHERE %s IS NOT NULL AND configurado = @material_color", IdentSanit(material_input),IdentSanit(material_input))
 	standards_list, _ := exec_query(Sql_query, pgx.NamedArgs{"material_color": material_color})
 	return standards_list, nil
 }
 
-func return_color_names(material_color string) ([]any, error) {
+func return_color_names(material_color string) ([]byte,) {
 	Sql_query := fmt.Sprintf("SELECT configurado FROM configurados_standards")
-	standards_list, _ := exec_query(Sql_query, pgx.NamedArgs{"material_color": ""})
-	return standards_list, nil
+	colors_list, _ := exec_query(Sql_query, pgx.NamedArgs{"material_color": ""})
+	return colors_list
 }
