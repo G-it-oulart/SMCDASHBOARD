@@ -87,7 +87,6 @@ async function return_colors() {
     document.getElementById("color_list").appendChild(el);
   }
 }
-
 document.addEventListener("DOMContentLoaded", function () {
   const button_value = document
     .getElementById("filt_button")

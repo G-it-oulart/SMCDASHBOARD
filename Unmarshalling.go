@@ -2,12 +2,13 @@ package main
 
 import (
 	"encoding/json"
+	"time"
 ) 	
 type JSON_float64 struct {
 		Value float64 `json:"material"`
 	}
 type JSON_string struct {
-		Value string `json:"configurado"`
+		Value string `json:"string_value"`
 	}
 	
 func conv_array_float64(orig_list []byte) []float64 {
@@ -38,4 +39,14 @@ func conv_array_string(orig_list []byte) []string {
 		new_string_list=append(new_string_list,element.Value)
 	}
 	return new_string_list
+}
+
+func format_json(orig_dates []string) []string {
+	var formatted_dates []string
+	for _,element:= range orig_dates{
+	t,_ := time.Parse(time.RFC3339, element)
+	dateWithoutHours := t.Format("2006-01-02")
+	formatted_dates = append(formatted_dates,dateWithoutHours)
+	}
+	return formatted_dates
 }

@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"log"
 	"os"
 	"reflect"
 
@@ -36,9 +37,18 @@ func exec_query(query string, args pgx.NamedArgs) ([]byte, error) {
 	fmt.Println("JSON Result::> ", string(json))
 	return json,nil
 }
+func insert_into_db(linha,cor,current_date string,massa,primer,verniz,esmalte,tingidor float64) error {
+	conn, _ := connect_db()
+	query := fmt.Sprintf("INSERT INTO dados_pesagens (linha,massa,primer,verniz,esmalte,tingidor,data_pesagem,color_id) VALUES ('%s',%f,%f,%f,%f,%f,'%s',(select color_id from configurados_standards where configurado = '%s'));",linha,massa,primer,verniz,esmalte,tingidor,current_date,cor)
+	_,err:= conn.Exec(context.Background(),query)
+	if err != nil{
+		log.Println("Error Inserting values")
+		return err
+	}
+	return nil
+}
 
 func PgSqlRowsToJson(rows pgx.Rows) []byte {
-
 	fieldDescriptions := rows.FieldDescriptions()
 	var columns []string
 	for _, col := range fieldDescriptions {
@@ -97,7 +107,13 @@ func IdentSanit(input_string string) string {
 }
 
 func filt_dados_pesagens(data_input_init, data_input_end, material_input, material_color string) ([]byte, error) {
-	Sql_query := fmt.Sprintf("SELECT %s as material FROM dados_pesagens  WHERE %s IS NOT NULL AND configurado = @material_color AND data_pesagem BETWEEN @data_init AND @data_end;", IdentSanit(material_input), IdentSanit(material_input))
+	Sql_query := fmt.Sprintf("SELECT dados_pesagens.%s as material FROM dados_pesagens INNER JOIN configurados_standards ON dados_pesagens.color_id = configurados_standards.color_id  WHERE dados_pesagens.%s IS NOT NULL AND configurado = @material_color AND data_pesagem BETWEEN @data_init AND @data_end ORDER BY id ASC; ", IdentSanit(material_input), IdentSanit(material_input))
+	filt_list, _ := exec_query(Sql_query, pgx.NamedArgs{"data_init": data_input_init, "data_end": data_input_end, "material_color": material_color})
+	return filt_list, nil
+}
+
+func return_dates(data_input_init, data_input_end, material_input, material_color string) ([]byte, error) {
+	Sql_query := fmt.Sprintf("SELECT data_pesagem as string_value FROM dados_pesagens  INNER JOIN configurados_standards ON dados_pesagens.color_id = configurados_standards.color_id  WHERE dados_pesagens.%s IS NOT NULL AND configurado = @material_color AND data_pesagem BETWEEN @data_init AND @data_end ORDER BY id ASC;" , IdentSanit(material_input))
 	filt_list, _ := exec_query(Sql_query, pgx.NamedArgs{"data_init": data_input_init, "data_end": data_input_end, "material_color": material_color})
 	return filt_list, nil
 }
@@ -109,7 +125,7 @@ func return_standards(material_input, material_color string) ([]byte, error) {
 }
 
 func return_color_names(material_color string) ([]byte,) {
-	Sql_query := fmt.Sprintf("SELECT configurado FROM configurados_standards")
+	Sql_query := "SELECT configurado as string_value FROM configurados_standards"
 	colors_list, _ := exec_query(Sql_query, pgx.NamedArgs{"material_color": ""})
 	return colors_list
 }
