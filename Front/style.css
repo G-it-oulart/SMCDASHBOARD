@@ -1,0 +1,67 @@
+@charset "UTF-8";
+
+h1 {
+  text-align: center;
+  font-family: Montserrat;
+}
+div {
+  font-size: 35px;
+  font-family: Montserrat;
+}
+label {
+  font-family: Montserrat;
+}
+select {
+  font-family: Montserrat;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+}
+
+html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+}
+
+.grid_items {
+  display: grid;
+  grid-template-columns: 400px 400px;
+  justify-content: center;
+  font-size: 30px;
+}
+
+.container {
+  grid-template-rows: 20px;
+  display: grid;
+  row-gap: 40px;
+  grid-template-columns: 1fr;
+}
+
+.grid-column-1 {
+  display: grid;
+  grid-template-rows: 1fr;
+  justify-content: center;
+  font-family: montserrat;
+}
+
+.button {
+  font-family: Montserrat;
+  font-size: 20px;
+}
+
+.insertion {
+  display: grid;
+  align-items: center;
+}
+
+.select {
+  font-family: Montserrat;
+  font-size: 20px;
+  text-align: center;
+}

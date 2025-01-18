@@ -1,32 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <link
+      href="https://fonts.googleapis.com/css?family=Montserrat"
+      rel="stylesheet"
+    />
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Data Inser</title>
+    <link rel="stylesheet" href="style.css" />
     <script src="insert_data.js"></script>
   </head>
-  <body>
-    <form>
-      <label>Linha</label>
-      <select name="Linhas" id="linhas">
-        <option value="LINHA1">Linha 1</option>
-        <option value="LINHA2">Linha 2</option>
-        <option value="LINHA3">Linha 3</option>
-      </select>
-      <label>Massa</label>
-      <input type="number" id="massa" name="massa" step="0.01" required />
-      <label>Primer</label>
-      <input type="number" id="primer" name="primer" step="0.01" required />
-      <label>Verniz</label>
-      <input type="number" id="verniz" name="verniz" step="0.01" required />
-      <label>Esmalte</label>
-      <input type="number" id="esmalte" name="esmalte" step="0.01" required />
-      <label>Tingidor</label>
-      <input type="number" id="tingidor" name="tingidor" step="0.01" required />
-      <label>Escolha a cor</label>
-      <select id="color_list"></select>
-      <input type="button" value="insert data" id="submit" />
-    </form>
+  <body class="insertion">
+    <div class="container">
+      <div class="grid_items">
+        <label>Linha</label>
+        <select name="Linhas" id="linhas" class="select">
+          <option value="LINHA1">Linha 1</option>
+          <option value="LINHA2">Linha 2</option>
+          <option value="LINHA3">Linha 3</option>
+        </select>
+      </div>
+      <div class="grid_items">
+        <label>Massa</label>
+        <input type="number" id="massa" name="massa" step="0.01" required />
+      </div>
+      <div class="grid_items">
+        <label>Primer</label>
+        <input type="number" id="primer" name="primer" step="0.01" required />
+      </div>
+      <div class="grid_items">
+        <label>Verniz</label>
+        <input type="number" id="verniz" name="verniz" step="0.01" required />
+      </div>
+      <div class="grid_items">
+        <label>Esmalte </label>
+        <input type="number" id="esmalte" name="esmalte" step="0.01" required />
+      </div>
+      <div class="grid_items">
+        <label>Tingidor </label>
+        <input
+          type="number"
+          id="tingidor"
+          name="tingidor"
+          step="0.01"
+          required
+        />
+      </div>
+      <div class="grid_items">
+        <label>Escolha a cor </label>
+        <select id="color_list" class="select"></select>
+      </div>
+      <div class="grid-column-1">
+        <input type="button" value="Insert Data" id="submit" class="button" />
+      </div>
+    </div>
   </body>
 </html>

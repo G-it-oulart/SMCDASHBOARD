@@ -1,18 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <link
+      href="https://fonts.googleapis.com/css?family=Montserrat"
+      rel="stylesheet"
+    />
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="style.css" />
     <script src="Site_funcs.js"></script>
-    <div>
-      <canvas id="myChart"></canvas>
-    </div>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   </head>
 
   <body>
-    <label>Initial date</label>
+    <label> Initial date</label>
     <input type="date" id="data_init" />
     <label>Final date</label>
     <input type="date" id="data_end" />
@@ -27,5 +29,8 @@
     <label for="color">Choose a color:</label>
     <select id="color_list"></select>
     <button type="button" id="filt_button">Filter data</button>
+    <div>
+      <canvas id="myChart"></canvas>
+    </div>
   </body>
 </html>

@@ -42,7 +42,7 @@ func insert_into_db(linha,cor,current_date string,massa,primer,verniz,esmalte,ti
 	query := fmt.Sprintf("INSERT INTO dados_pesagens (linha,massa,primer,verniz,esmalte,tingidor,data_pesagem,color_id) VALUES ('%s',%f,%f,%f,%f,%f,'%s',(select color_id from configurados_standards where configurado = '%s'));",linha,massa,primer,verniz,esmalte,tingidor,current_date,cor)
 	_,err:= conn.Exec(context.Background(),query)
 	if err != nil{
-		log.Println("Error Inserting values")
+		log.Println("Error Inserti'ng values")
 		return err
 	}
 	return nil
