@@ -13,6 +13,7 @@ func handleRequests() {
 	http.HandleFunc("/Filter", returnData)
 	http.HandleFunc("/dropdown", return_colors)
 	http.HandleFunc("/Insert", insertData)
+	http.HandleFunc("/ranking", color_ranking)
 	log.Fatal(http.ListenAndServe(":10000", nil))
 
 }
@@ -33,10 +34,9 @@ type array_encoder struct {
 	Std []float64
 }
 
-
 func return_colors(w http.ResponseWriter, r *http.Request) {
 	set_headers(w)
-	dropdown_colors:= conv_array_string(return_color_names(""))
+	dropdown_colors:= conv_array_string(return_color_names())
 	if boca := json.NewEncoder(w).Encode(dropdown_colors); boca != nil {
 		http.Error(w, "Failed to encode response", http.StatusInternalServerError)
 	}
@@ -112,4 +112,14 @@ func insertData (w http.ResponseWriter, r *http.Request) {
 	var date = time.Now()
 	current_date = date.Format("2006-01-02")
 	insert_into_db(linhas,cor,current_date,massa,primer,verniz,esmalte,tingidor)
+}
+
+func color_ranking(w http.ResponseWriter, r *http.Request) {
+	set_headers(w)
+	material:= r.URL.Query().Get("materials")
+	ranking:= order_dev_rank(rank_list_devs((conv_array_dev(values_by_color(material)))))
+	fmt.Println(ranking)
+	if boca := json.NewEncoder(w).Encode(ranking); boca != nil {
+		http.Error(w, "Failed to encode response", http.StatusInternalServerError)
+	}
 }

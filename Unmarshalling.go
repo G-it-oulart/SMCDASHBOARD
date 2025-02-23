@@ -10,7 +10,7 @@ type JSON_float64 struct {
 type JSON_string struct {
 		Value string `json:"string_value"`
 	}
-	
+
 func conv_array_float64(orig_list []byte) []float64 {
 	var new_list []JSON_float64
 	var new_float_list []float64
@@ -20,7 +20,15 @@ func conv_array_float64(orig_list []byte) []float64 {
 	}
 	return new_float_list
 }
-
+type dev_rank struct{
+	Configurado string `json:"configurado"`
+	Value float64 `json:"value"`
+	}
+func conv_array_dev(orig_list []byte) []dev_rank {
+	var new_list []dev_rank
+	json.Unmarshal(orig_list, &new_list)
+	return new_list
+}
 func conv_value_float64(orig_list []byte) float64 {
 	var value []JSON_float64
 	var float_list []float64

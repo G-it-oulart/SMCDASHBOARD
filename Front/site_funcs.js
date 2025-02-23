@@ -94,4 +94,15 @@ document.addEventListener("DOMContentLoaded", function () {
       build_graph();
     });
   return_colors();
+  $("input[type=date]").keyup(function () {
+    var datevalue = $(this).val();
+    var dateSplit = datevalue.split("-"); // yyyy-mm-dd
+    var dateYear = dateSplit[0]; // yyyy
+    var dateMonth = dateSplit[1]; // mm
+    var dateDay = dateSplit[2]; // dd
+    if (dateYear.length > 4) {
+      dateYear = dateYear.substring(0, 4);
+      $(this).val(dateYear + "-" + dateMonth + "-" + dateDay);
+    }
+  });
 });

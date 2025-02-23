@@ -11,24 +11,28 @@
     <link rel="stylesheet" href="style.css" />
     <script src="Site_funcs.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
   </head>
 
   <body>
-    <label> Initial date</label>
-    <input type="date" id="data_init" />
-    <label>Final date</label>
-    <input type="date" id="data_end" />
-    <label for="materials">Choose a material:</label>
-    <select name="materials" id="materials">
-      <option value="massa">Massa</option>
-      <option value="primer">Primer</option>
-      <option value="verniz">verniz</option>
-      <option value="esmalte">Esmalte</option>
-      <option value="tingidor">Tingidor</option>
-    </select>
-    <label for="color">Choose a color:</label>
-    <select id="color_list"></select>
-    <button type="button" id="filt_button">Filter data</button>
+    <div class="parameters">
+      <label> Initial date</label>
+      <input type="date" id="data_init" />
+      <label>Final date</label>
+      <input type="date" id="data_end" />
+      <label for="materials">Choose a material:</label>
+      <select name="materials" id="materials">
+        <option value="massa">Massa</option>
+        <option value="primer">Primer</option>
+        <option value="verniz">verniz</option>
+        <option value="esmalte">Esmalte</option>
+        <option value="tingidor">Tingidor</option>
+      </select>
+      <label for="color">Choose a color:</label>
+      <select id="color_list"></select>
+      <button type="button" id="filt_button">Filter data</button>
+    </div>
+
     <div>
       <canvas id="myChart"></canvas>
     </div>

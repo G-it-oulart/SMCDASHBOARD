@@ -49,4 +49,26 @@ document.addEventListener("DOMContentLoaded", function () {
       insert();
     });
   return_colors();
+  $("input[type=number]").keyup(function () {
+    var value = $(this).val();
+    if (value.length == 2) {
+      var value = $(this).val();
+      var Split = value.split("");
+      $(this).val(Split[0] + "." + Split[1]);
+    }
+    if (value.length == 5) {
+      var Split = value.split("");
+      $(this).val(Split[0] + Split[2] + "." + Split[3] + Split[4]);
+    }
+  });
+  $("input[type=number]").keyup(function () {
+    var value = $(this).val();
+    if (value.length > 5) {
+      var Split = value.split(".");
+      var first_value = Split[0]; // xx
+      var last_value = Split[1]; // yy
+      last_value = last_value.substring(0, 2);
+      $(this).val(first_value + "." + last_value);
+    }
+  });
 });

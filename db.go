@@ -34,7 +34,6 @@ func exec_query(query string, args pgx.NamedArgs) ([]byte, error) {
 		os.Exit(1)
 	}
 	json:=PgSqlRowsToJson(rows)
-	fmt.Println("JSON Result::> ", string(json))
 	return json,nil
 }
 func insert_into_db(linha,cor,current_date string,massa,primer,verniz,esmalte,tingidor float64) error {
@@ -42,7 +41,7 @@ func insert_into_db(linha,cor,current_date string,massa,primer,verniz,esmalte,ti
 	query := fmt.Sprintf("INSERT INTO dados_pesagens (linha,massa,primer,verniz,esmalte,tingidor,data_pesagem,color_id) VALUES ('%s',%f,%f,%f,%f,%f,'%s',(select color_id from configurados_standards where configurado = '%s'));",linha,massa,primer,verniz,esmalte,tingidor,current_date,cor)
 	_,err:= conn.Exec(context.Background(),query)
 	if err != nil{
-		log.Println("Error Inserti'ng values")
+		log.Println("Error Inserting values")
 		return err
 	}
 	return nil
@@ -124,8 +123,13 @@ func return_standards(material_input, material_color string) ([]byte, error) {
 	return standards_list, nil
 }
 
-func return_color_names(material_color string) ([]byte,) {
+func return_color_names() ([]byte,) {
 	Sql_query := "SELECT configurado as string_value FROM configurados_standards"
+	colors_list, _ := exec_query(Sql_query, pgx.NamedArgs{"material_color": ""})
+	return colors_list
+}
+func values_by_color(material_input string) ([]byte) {
+	Sql_query := fmt.Sprintf("SELECT dados_pesagens.%s as value,configurados_standards.configurado from dados_pesagens inner join configurados_standards on dados_pesagens.color_id = configurados_standards.color_id order by configurados_standards.configurado",IdentSanit(material_input))
 	colors_list, _ := exec_query(Sql_query, pgx.NamedArgs{"material_color": ""})
 	return colors_list
 }
